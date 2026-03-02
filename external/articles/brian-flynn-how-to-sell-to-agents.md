@@ -74,3 +74,104 @@ This calculation comes down to two things: cost and speed. Information arbitrage
 - Our Discoverability Stack framework (Layer 3: Evaluation)
 - Profound's AEO positioning
 - The "connectors as distribution" thesis
+
+## Full Text (continued)
+
+A specialized service with a curated catalog returns the same answer for $0.01-0.02 in under 200 milliseconds. Accuracy is higher because it's maintained data, not generated reasoning. That's 7-50x cheaper and 50-100x faster. The math is the decision.
+
+Speed matters as much as cost. Maybe more. While an agent spends 25 seconds reasoning about a sub-task, the entire pipeline is blocked. The user is waiting. Time compounds: a 10-step agent workflow where each step takes 20 seconds is a 3+ minute wait. Replace each step with a 200ms service call and the whole thing finishes in 2 seconds.
+
+Specialization beats generalization. A general-purpose agent can scrape the web, parse HTML, and extract structured data. It'll work. It'll also cost 100x more than a dedicated scraping service that does it at the infrastructure level for $0.003 per page.
+
+The economic logic: if the marginal cost of delegation is lower than the marginal cost of computation, and the specialized service is faster, delegate. Always.
+
+This creates room for a long tail of hyper-specialized services. A single-purpose endpoint that does one thing really well, really fast, for fractions of a cent per call.
+
+But the "build" boundary shifts. As models get cheaper and more capable, some services get absorbed back into the agent. The services that survive are the ones with real advantages the agent can't replicate: proprietary datasets, real-time feeds, hardware-dependent computation like image generation or web rendering.
+
+You don't sell intelligence. Agents have plenty of that. You sell access to things they literally cannot compute on their own.
+
+### What selling actually looks like
+
+If you're building a service that agents will buy, the product requirements look nothing like what you'd build for humans.
+
+**Price belongs in the protocol, not on a webpage.** Agents need machine-readable pricing at the API layer. Not a pricing page with three tiers and a "Contact Sales" button. The price should be in the response itself, as structured data. When an agent hits your endpoint, it should know immediately what the call will cost and how to pay.
+
+HTTP has had a status code for this since 1997: 402 Payment Required. It was "reserved for future use" for almost three decades. We're finally finding that use.
+
+**Per-request pricing changes what's viable.** Traditional API billing starts at $29/month. At that price point, you need to be a platform with broad functionality to justify the subscription. At fractions of a cent per call, the economics flip. A single-purpose endpoint that answers one specific question can be a real business. A social data feed at a tenth of a cent per call. A document analysis tool at half a cent. An image generator at six-tenths of a cent. These services couldn't sustain themselves in a subscription model. Nobody's paying $29/month for a single endpoint. But in a per-request model where agents call them thousands of times a day, the math works.
+
+**Onboarding has to be automatable.** This doesn't mean zero auth. Valuable services still need identity, rate limits, and abuse prevention. But the sign-up flow needs to be something an agent can complete programmatically. If your onboarding requires a human to click through a dashboard, fill out a form, and copy-paste an API key into a config file, you've added minutes of friction to a seconds-long integration.
+
+The ideal: one request to discover, one to authenticate, one to buy. Three HTTP calls, no human in the loop.
+
+### What doesn't change
+
+I'd be lying if I said the entire sales funnel just disappears. It doesn't. It re-optimizes.
+
+**Trust becomes machine-evaluable.** Brand doesn't vanish. It becomes a reliability score. Agents will track (and services will start publishing) uptime history, response accuracy, latency percentiles, and output provenance. The services that can prove their outputs are accurate will beat cheaper alternatives that can't. Verified benchmarks, deterministic replays, confidence scores. If your outputs are opaque, agents will treat them as risky, and risky means expensive.
+
+Early data from agent service catalogs paints a stark picture. In one sweep across 44 services, only 2 had fully working endpoints. 53% of direct service calls succeeded. The recommendation layer worked 87% of the time. Reliability isn't a nice-to-have. In agent commerce, it's the entire product. Dead services get zero traffic, permanently.
+
+**Policy still gates purchasing.** Enterprise agents will operate within constraints. Spending limits, vendor allowlists, data residency requirements, approved-provider lists. The funnel doesn't fully collapse. It re-optimizes around "allowed, trusted, and auditable" alongside "fast and cheap."
+
+But compliance itself can become machine-readable. Terms of service as structured data. Data retention policies in API headers. Licensing as metadata. The agents that need compliance will buy from services that make compliance easy to verify programmatically.
+
+**The adversarial environment is real.** Not every endpoint will be honest. Some will return garbage. Some will exfiltrate data from the request. Some will lie about their capabilities to capture traffic. Agents need verification, sandboxing, and reputation-weighted routing. The services that invest in provability and transparency create a moat that's hard to replicate. Trust is the ultimate product feature in a market of machines.
+
+### Making your service agent-native
+
+Agents are already spending money. They're just spending it through clunky interfaces designed for humans. Signing up for API keys. Navigating billing dashboards. Parsing pricing pages built for browsers.
+
+If you want to sell to agents, here's the checklist:
+
+**Machine-readable capabilities.** Publish what your service does in a structured format. Not a marketing page. A JSON manifest that any agent can parse in one request.
+
+**Pricing in the protocol.** Return your price in the API response, not on a webpage. Agents can't read your pricing page, and they won't try. Use HTTP 402 or a similar standard so the cost is part of the interaction itself.
+
+**Automatable onboarding.** Make it possible for an agent to go from "never heard of you" to "paying customer" without a human touching a dashboard. Programmatic auth, programmatic payment, programmatic access.
+
+**Provable reliability.** Publish your uptime, latency percentiles, and accuracy metrics. Better yet, return confidence scores with your responses. Agents will route to the service they can trust, and trust is measured, not marketed.
+
+**Be faster and cheaper than self-computation.** This is the bar. If an agent can compute your output itself in less time and for less money than calling your API, it will. You need to be definitively faster and cheaper than the agent's own reasoning. That's the only value proposition that matters.
+
+The web was built for humans to browse. The next layer will be built for agents to buy. The question is whether your service is ready for the new buyer.
+
+## Additional Ghost Team Annotations (Part 2)
+
+### The Killer Stats
+- **44 services tested, only 2 fully working** — reliability is catastrophically bad right now
+- **53% direct call success rate** — half the time services just don't work
+- **87% recommendation layer success** — the intermediary layer helps, but still 13% failure
+- **7-50x cheaper, 50-100x faster** via specialized services vs agent self-computation
+
+### Product Ideas This Unlocks
+
+1. **Reliability Score as a Service**
+   - Track uptime, accuracy, latency for every MCP server / ChatGPT app / API in our index
+   - Publish scores publicly — become the "credit rating agency" for AI tools
+   - Companies pay to monitor and improve their score
+   - Agents query us to decide which tool to use
+
+2. **Agent-Native Readiness Audit**
+   - Service that evaluates: Is your API agent-ready?
+   - Checklist: machine-readable capabilities ✓, pricing in protocol ✓, automatable onboarding ✓, provable reliability ✓
+   - Ghost Team consulting service: "We make your tool agent-native"
+
+3. **The "Only 2 out of 44 work" Problem**
+   - This IS our market. Most tools aren't ready.
+   - We help them get ready. That's the agency play.
+   - We track who's ready. That's the platform play.
+
+### Key Quotes for Content
+- "You don't sell intelligence. Agents have plenty of that. You sell access to things they literally cannot compute on their own."
+- "Trust is the ultimate product feature in a market of machines."
+- "Dead services get zero traffic, permanently."
+- "The web was built for humans to browse. The next layer will be built for agents to buy."
+- "Brand doesn't vanish. It becomes a reliability score."
+
+### How This Maps to Our Discoverability Stack
+- **Layer 1 (Machine-Readability):** JSON manifests, structured capabilities, pricing in protocol
+- **Layer 2 (Visibility):** Agent-queryable registries, capability catalogs
+- **Layer 3 (Evaluation):** Reliability scores, uptime tracking, latency benchmarks ← **THIS IS THE GAP**
+- **Layer 4 (Intent Matching):** Being selected at runtime based on proven performance
